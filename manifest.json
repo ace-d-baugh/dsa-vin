@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.17",
+  "version": "1.0.0",
+  "id": "YOUR-APP-REGISTRATION-ID-HERE",
+  "packageName": "com.vinny.wdw",
+  "developer": {
+    "name": "VINNY",
+    "websiteUrl": "https://your-bot-host.com",
+    "privacyUrl": "https://your-bot-host.com/privacy",
+    "termsOfUseUrl": "https://your-bot-host.com/terms"
+  },
+  "name": {
+    "short": "VINNY WDW",
+    "full": "VINNY WDW — Walt Disney World Status Bot"
+  },
+  "description": {
+    "short": "Real-time WDW attraction status alerts",
+    "full": "Posts to your chat whenever a Walt Disney World attraction goes down (101) or comes back up (102). Powered by ThemeParks.wiki."
+  },
+  "icons": {
+    "color": "color.png",
+    "outline": "outline.png"
+  },
+  "accentColor": "#003087",
+  "bots": [
+    {
+      "botId": "YOUR-APP-REGISTRATION-ID-HERE",
+      "scopes": ["personal", "team", "groupChat"],
+      "supportsFiles": false,
+      "isNotificationOnly": false
+    }
+  ],
+  "permissions": ["identity", "messageTeamMembers"],
+  "validDomains": []
+}
