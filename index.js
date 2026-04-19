@@ -1,5 +1,5 @@
 const { BotFrameworkAdapter, TurnContext } = require('botbuilder');
-const restify = require('restify');
+const express = require('express');
 const fs = require('fs').promises;
 const path = require('path');
 require('dotenv').config();
@@ -9,6 +9,7 @@ require('dotenv').config();
 const adapter = new BotFrameworkAdapter({
   appId: process.env.MicrosoftAppId,
   appPassword: process.env.MicrosoftAppPassword,
+  channelAuthTenant: process.env.MicrosoftAppTenantId,
 });
 
 adapter.onTurnError = async (context, error) => {
@@ -17,18 +18,18 @@ adapter.onTurnError = async (context, error) => {
 
 // ─── HTTP Server ──────────────────────────────────────────────────────────────
 
-const server = restify.createServer();
-server.use(restify.plugins.bodyParser());
+const app = express();
+app.use(express.json());
 
-server.post('/api/messages', (req, res) => {
+app.post('/api/messages', (req, res) => {
   adapter.processActivity(req, res, async (context) => {
     await handleTurn(context);
   });
 });
 
 const PORT = process.env.PORT || 3978;
-server.listen(PORT, () => {
-  console.log(`DSA VIN Teams bot listening on port ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`VINNY Teams bot listening on port ${PORT}`);
 });
 
 // ─── Config ───────────────────────────────────────────────────────────────────
@@ -108,11 +109,9 @@ const ATTRACTIONS = [
   { name: 'Zootopia: Better Zoogether!', id: '1b15c77b-0311-4171-8e59-7f38e6d60754', park: 'AK' },
 ];
 
-const PARK_NAMES = { MK: 'Magic Kingdom', EP: 'Epcot', HS: "Hollywood Studios", AK: 'Animal Kingdom' };
+const PARK_NAMES = { MK: 'Magic Kingdom', EP: 'Epcot', HS: 'Hollywood Studios', AK: 'Animal Kingdom' };
 
 // ─── Conversation Reference Store ─────────────────────────────────────────────
-// Persists all chats/channels the bot has been added to so proactive messages
-// can be sent without an active incoming turn.
 
 async function loadConversationRefs() {
   try {
@@ -145,7 +144,6 @@ async function loadState() {
     const raw = await fs.readFile(CONFIG.STATE_FILE, 'utf8');
     return JSON.parse(raw);
   } catch {
-    // Build initial state — all unknown so first real poll doesn't false-alarm
     const state = {};
     for (const attr of ATTRACTIONS) {
       state[attr.id] = { status: null };
@@ -164,22 +162,20 @@ async function handleTurn(context) {
   const type = context.activity.type;
 
   if (type === 'installationUpdate' || type === 'conversationUpdate') {
-    // Bot was added to a chat — store the reference and greet
     await storeConversationRef(context);
     if (
       type === 'installationUpdate' ||
       (context.activity.membersAdded || []).some(m => m.id === context.activity.recipient.id)
     ) {
       await context.sendActivity(
-        '👋 **DSA VIN** is online! I\'ll post here whenever a Walt Disney World attraction goes down (❌ 101) or comes back up (✅ 102).'
+        "👋 **VINNY WDW** is online! I'll post here whenever a Walt Disney World attraction goes down (❌ 101) or comes back up (✅ 102)."
       );
     }
   } else if (type === 'message') {
-    // Store ref on any message too (covers group chats where installationUpdate may not fire)
     await storeConversationRef(context);
     const text = (context.activity.text || '').trim().toLowerCase();
-    if (text === 'status' || text === 'dsa vin status') {
-      await context.sendActivity('✅ DSA VIN is running and polling every 10 seconds.');
+    if (text === 'status' || text === 'vinny status') {
+      await context.sendActivity('✅ VINNY WDW is running and polling every 10 seconds.');
     }
   }
 }
@@ -231,13 +227,12 @@ async function poll() {
       if (!live) continue;
 
       const prev = state[attr.id]?.status ?? null;
-      const curr = live.status; // 'OPERATING', 'DOWN', 'CLOSED', 'REFURBISHMENT'
+      const curr = live.status;
 
-      if (curr === prev) continue; // No change
+      if (curr === prev) continue;
 
       state[attr.id] = { status: curr };
 
-      // Only notify on DOWN and recovery-to-OPERATING transitions
       if (!isStartup) {
         const parkLabel = PARK_NAMES[attr.park] || attr.park;
 
@@ -246,7 +241,6 @@ async function poll() {
         } else if (curr === 'OPERATING' && prev === 'DOWN') {
           changed.push(`✅ **102 — UP** | ${attr.name} | ${parkLabel} | ${time}`);
         }
-        // CLOSED and REFURBISHMENT changes are silent — add cases here if you want them
       }
     }
 
@@ -268,7 +262,6 @@ async function poll() {
   }
 }
 
-// Start polling after a short delay to let the server come up
 setTimeout(() => {
   poll();
   setInterval(poll, CONFIG.POLL_INTERVAL);

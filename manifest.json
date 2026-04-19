@@ -2,17 +2,17 @@
   "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.17/MicrosoftTeams.schema.json",
   "manifestVersion": "1.17",
   "version": "1.0.0",
-  "id": "YOUR-APP-REGISTRATION-ID-HERE",
-  "packageName": "com.vinny.wdw",
+  "id": "182ab00e-e435-49dd-89ca-d9284ed8b4ee",
+  "packageName": "com.das-vin",
   "developer": {
-    "name": "VINNY",
+    "name": "DSA VIN",
     "websiteUrl": "https://your-bot-host.com",
     "privacyUrl": "https://your-bot-host.com/privacy",
     "termsOfUseUrl": "https://your-bot-host.com/terms"
   },
   "name": {
-    "short": "VINNY WDW",
-    "full": "VINNY WDW — Walt Disney World Status Bot"
+    "short": "DSA VIN",
+    "full": "DSA VIN — Walt Disney World Status Bot"
   },
   "description": {
     "short": "Real-time WDW attraction status alerts",
@@ -25,7 +25,7 @@
   "accentColor": "#003087",
   "bots": [
     {
-      "botId": "YOUR-APP-REGISTRATION-ID-HERE",
+      "botId": "182ab00e-e435-49dd-89ca-d9284ed8b4ee",
       "scopes": ["personal", "team", "groupChat"],
       "supportsFiles": false,
       "isNotificationOnly": false
