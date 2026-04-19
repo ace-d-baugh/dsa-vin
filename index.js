@@ -29,7 +29,7 @@ app.post('/api/messages', (req, res) => {
 
 const PORT = process.env.PORT || 3978;
 app.listen(PORT, () => {
-  console.log(`VINNY Teams bot listening on port ${PORT}`);
+  console.log(`DSAVIN Teams bot listening on port ${PORT}`);
 });
 
 // ─── Config ───────────────────────────────────────────────────────────────────
@@ -168,14 +168,14 @@ async function handleTurn(context) {
       (context.activity.membersAdded || []).some(m => m.id === context.activity.recipient.id)
     ) {
       await context.sendActivity(
-        "👋 **VINNY WDW** is online! I'll post here whenever a Walt Disney World attraction goes down (❌ 101) or comes back up (✅ 102)."
+        "👋 **DSA VIN** is online! I'll post here whenever a Walt Disney World attraction goes down (❌ 101) or comes back up (✅ 102)."
       );
     }
   } else if (type === 'message') {
     await storeConversationRef(context);
     const text = (context.activity.text || '').trim().toLowerCase();
-    if (text === 'status' || text === 'vinny status') {
-      await context.sendActivity('✅ VINNY WDW is running and polling every 10 seconds.');
+    if (text === 'status' || text === 'dsa vin status') {
+      await context.sendActivity('✅ DSA VIN is running and polling every 10 seconds.');
     }
   }
 }

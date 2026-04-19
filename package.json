@@ -1,7 +1,7 @@
 {
-  "name": "vinny-teams",
+  "name": "dsa-vin-teams",
   "version": "1.0.0",
-  "description": "VINNY WDW — Microsoft Teams attraction status bot",
+  "description": "DSA VIN — Microsoft Teams attraction status bot",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",

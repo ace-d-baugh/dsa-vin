@@ -3,20 +3,19 @@
   "manifestVersion": "1.17",
   "version": "1.0.0",
   "id": "182ab00e-e435-49dd-89ca-d9284ed8b4ee",
-  "packageName": "com.das-vin",
-  "developer": {
-    "name": "DSA VIN",
-    "websiteUrl": "https://your-bot-host.com",
-    "privacyUrl": "https://your-bot-host.com/privacy",
-    "termsOfUseUrl": "https://your-bot-host.com/terms"
-  },
   "name": {
     "short": "DSA VIN",
-    "full": "DSA VIN — Walt Disney World Status Bot"
+    "full": "DSA VIN Attraction Status Bot"
   },
   "description": {
-    "short": "Real-time WDW attraction status alerts",
-    "full": "Posts to your chat whenever a Walt Disney World attraction goes down (101) or comes back up (102). Powered by ThemeParks.wiki."
+    "short": "Real-time WDW attraction alerts",
+    "full": "Posts alerts when Walt Disney World attractions go down or come back up."
+  },
+  "developer": {
+    "name": "DSA VIN",
+    "websiteUrl": "https://example.com",
+    "privacyUrl": "https://example.com/privacy",
+    "termsOfUseUrl": "https://example.com/terms"
   },
   "icons": {
     "color": "color.png",
